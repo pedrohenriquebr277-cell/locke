@@ -1,0 +1,64 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { height: 100%; margin: 0; }
+
+body {
+  padding-top: 36px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+input { user-select: text; }
+
+h1, h2, h3 { font-family: var(--font-serif); font-weight: 500; margin: 0; letter-spacing: -0.01em; }
+p { margin: 0; }
+[hidden] { display: none !important; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Barra superior sem borda nativa: a área vazia arrasta a janela, os botões são fixos à direita. */
+.titlebar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 5;
+  display: flex; align-items: stretch; height: 36px;
+  background: var(--bg);
+}
+.titlebar-drag { flex: 1; }
+.win-controls { display: flex; }
+.win-btn {
+  width: 46px; height: 36px; padding: 0; border: 0; border-radius: 0;
+  background: transparent; color: var(--text-2); display: grid; place-items: center;
+  cursor: pointer; transition: background-color var(--t), color var(--t);
+}
+.win-btn svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round; }
+.win-btn:hover { background: var(--surface); color: var(--text); }
+.win-close:hover { background: #c42b1c; color: #fff; }
+.win-btn:focus-visible { outline-offset: -2px; }
+/* Tela cheia: sem barra. */
+.is-fullscreen .titlebar { display: none; }
+body.is-fullscreen { padding-top: 0; }
+
+.page {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 40px 24px 72px;
+}
+
+.view { animation: fade-in 200ms ease both; }
+@keyframes fade-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

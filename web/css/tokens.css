@@ -1,0 +1,43 @@
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/Inter-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Source Serif 4";
+  src: url("../assets/fonts/SourceSerif4-var.woff2") format("woff2");
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+
+  --bg: #1c1c1a;
+  --surface: #2a2a28;
+  --border: #3f3f3e;
+  --text: #f0f0f0;
+  --text-2: #9ca3af;
+  --text-disabled: #6b6b68;
+  --accent: #DE7C5A;
+  --accent-hover: #c46849;
+  --on-accent: #FFFFFF;
+  --error: #ff6b6b;
+  --danger-bg: #3f2a2a;
+  --success: #8fb58a;
+  --overlay: rgba(0, 0, 0, 0.6);
+
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+  --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+
+  --t: 180ms ease;
+  --content-width: 600px;
+}

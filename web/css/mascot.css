@@ -1,0 +1,10 @@
+/* Mascote animado (APNG com transparência, empacotado localmente). */
+.mascot { flex-shrink: 0; width: 150px; line-height: 0; }
+.mascot-lg { width: 200px; margin-bottom: 8px; }
+.mascot img { width: 100%; height: auto; display: block; }
+.mascot .mascot-still { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mascot .mascot-anim { display: none; }
+  .mascot .mascot-still { display: block; }
+}

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Locke</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/mascot.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/screens.css">
+</head>
+<body>
+  <header class="titlebar">
+    <div class="titlebar-drag pywebview-drag-region"></div>
+    <div class="win-controls">
+      <button id="win-min" class="win-btn" type="button" aria-label="Minimizar">
+        <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6h8"/></svg>
+      </button>
+      <button id="win-max" class="win-btn" type="button" aria-label="Maximizar">
+        <svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="2" width="8" height="8"/></svg>
+      </button>
+      <button id="win-close" class="win-btn win-close" type="button" aria-label="Fechar">
+        <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <!-- Carregando -->
+    <section id="view-loading" class="view" aria-busy="true" aria-label="Carregando">
+      <div class="skeleton" style="height:44px;width:160px"></div>
+      <div class="skeleton" style="height:22px;width:280px;margin-top:14px"></div>
+      <div class="skeleton" style="height:120px;margin-top:44px"></div>
+      <div class="skeleton" style="height:120px;margin-top:20px"></div>
+    </section>
+
+    <!-- Erro -->
+    <section id="view-error" class="view center-view" hidden>
+      <h1 id="error-title" class="state-title"></h1>
+      <p id="error-text" class="state-text"></p>
+      <button id="error-retry" class="btn btn-primary" type="button">Tentar novamente</button>
+    </section>
+
+    <!-- Tela 1: preparar -->
+    <section id="view-prepare" class="view" hidden>
+      <header class="page-header">
+        <div class="mascot" data-mascot></div>
+        <div>
+          <h1 class="brand">Locke</h1>
+          <p class="tagline">O que vamos proteger hoje?</p>
+        </div>
+      </header>
+
+      <section class="section" aria-labelledby="h-sites">
+        <h2 id="h-sites">Sites</h2>
+        <p class="sub">Endereços que ficarão inacessíveis durante a sessão.</p>
+        <form id="site-form" class="field-row" novalidate>
+          <label class="sr-only" for="site-input">Adicionar site</label>
+          <input id="site-input" class="input" type="text" placeholder="exemplo.com" autocomplete="off" spellcheck="false">
+          <button class="btn btn-primary" type="submit">Adicionar</button>
+        </form>
+        <p id="site-hint" class="hint" role="status"></p>
+        <ul id="site-list" class="chips" aria-label="Sites bloqueados"></ul>
+        <div id="site-recent" class="suggest" hidden><span class="suggest-label">Recentes:</span><div class="suggest-items"></div></div>
+        <div id="site-suggest" class="suggest" hidden><span class="suggest-label">Sugestões:</span><div class="suggest-items"></div></div>
+      </section>
+
+      <section class="section" aria-labelledby="h-apps">
+        <h2 id="h-apps">Apps</h2>
+        <p class="sub">Programas que serão encerrados e impedidos de abrir.</p>
+        <form id="app-form" class="field-row" novalidate>
+          <label class="sr-only" for="app-input">Adicionar app</label>
+          <input id="app-input" class="input" type="text" placeholder="discord.exe" autocomplete="off" spellcheck="false">
+          <button id="app-pick" class="btn btn-secondary" type="button">Escolher .exe</button>
+          <button class="btn btn-primary" type="submit">Adicionar</button>
+        </form>
+        <p id="app-hint" class="hint" role="status"></p>
+        <ul id="app-list" class="chips" aria-label="Apps bloqueados"></ul>
+        <div id="app-recent" class="suggest" hidden><span class="suggest-label">Recentes:</span><div class="suggest-items"></div></div>
+        <div id="app-suggest" class="suggest" hidden><span class="suggest-label">Sugestões:</span><div class="suggest-items"></div></div>
+      </section>
+
+      <section class="section" aria-labelledby="h-dur">
+        <h2 id="h-dur">Duração</h2>
+        <p class="sub">Por quanto tempo? O máximo é 8 horas.</p>
+        <div id="presets" class="presets" role="radiogroup" aria-labelledby="h-dur"></div>
+        <div class="custom-duration">
+          <span>Personalizado</span>
+          <label class="sr-only" for="dur-h">Horas</label>
+          <input id="dur-h" class="input" type="number" min="0" max="8" inputmode="numeric" placeholder="0">
+          <span>h</span>
+          <label class="sr-only" for="dur-m">Minutos</label>
+          <input id="dur-m" class="input" type="number" min="0" max="59" inputmode="numeric" placeholder="0">
+          <span>min</span>
+        </div>
+        <p id="dur-hint" class="hint" role="status"></p>
+      </section>
+
+      <div class="start-area">
+        <button id="start" class="btn btn-primary btn-lg" type="button" disabled>Iniciar bloqueio</button>
+        <p id="start-hint" class="hint" role="status"></p>
+      </div>
+    </section>
+
+    <!-- Tela 2: sessão ativa -->
+    <section id="view-active" class="view center-view" hidden>
+      <div id="active-banner" class="banner" role="status" hidden></div>
+      <div class="mascot mascot-lg" data-mascot></div>
+      <div class="ring">
+        <svg viewBox="0 0 300 300" aria-hidden="true">
+          <circle class="track" cx="150" cy="150" r="140"></circle>
+          <circle id="ring-progress" class="progress" cx="150" cy="150" r="140"></circle>
+        </svg>
+        <div id="countdown" class="time" role="timer" aria-live="off">00:00:00</div>
+      </div>
+      <p id="ends-at" class="ends"></p>
+      <p class="support">Respire. Volte para o que importa.</p>
+      <section class="blocked" aria-label="Itens bloqueados">
+        <div id="blocked-sites-wrap"><h3>Sites</h3><ul id="blocked-sites" class="chips"></ul></div>
+        <div id="blocked-apps-wrap"><h3>Apps</h3><ul id="blocked-apps" class="chips"></ul></div>
+      </section>
+    </section>
+
+    <!-- Tela 3: concluída -->
+    <section id="view-done" class="view center-view" hidden>
+      <div class="done-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+      </div>
+      <h1>Sessão concluída</h1>
+      <p class="lead">Você manteve o foco. Os bloqueios foram liberados.</p>
+      <div class="card done-summary"><dl id="done-summary" class="summary"></dl></div>
+      <button id="new-session" class="btn btn-primary" type="button">Nova sessão</button>
+    </section>
+
+  </main>
+
+  <div id="modal-root"></div>
+
+  <template id="tpl-mascot">
+    <img class="mascot-anim" src="assets/mascot/clawd.png" alt="">
+    <img class="mascot-still" src="assets/mascot/clawd-still.png" alt="">
+  </template>
+
+  <script src="js/validate.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

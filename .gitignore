@@ -1,0 +1,32 @@
+# Gerados pelo PyInstaller
+dist/
+dist_novo/
+build/
+build_novo/
+*.spec
+*.exe
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Logs e estado local
+*.log
+mock_state.json
+
+# Gerados pelo graphify (grafo, cache, relatório): regeneráveis com /graphify
+graphify-out/
+
+# Claude Code (configuração e sessões locais)
+.claude/
+
+# Segredos e temporários
+.env
+*.tmp
+
+# Editor / sistema
+.vscode/
+.idea/
+Thumbs.db
