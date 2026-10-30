@@ -19,11 +19,13 @@ Bloqueador de sites e aplicativos para Windows 10/11. Você escolhe o que proteg
 
 ## Instalação (usuário)
 
-1. Gere os executáveis (veja [Build](#build)) ou baixe-os.
-2. Em um PowerShell **como administrador**, rode `dist\instalar_servico.ps1`. Ele instala o serviço, com início automático e reinício em caso de falha.
-3. Abra o `Locke.exe` normalmente.
+1. Gere o instalador (veja [Build](#build)) ou baixe o `LockeSetup.exe`.
+2. Dê dois cliques no `LockeSetup.exe` e siga o assistente. Ele pede permissão de administrador, instala o Locke e o serviço (início automático, reinício em caso de falha) e cria o atalho no menu Iniciar.
+3. Abra o Locke pelo menu Iniciar.
 
-Para remover: `dist\desinstalar_servico.ps1` (administrador). Não funciona durante uma sessão ativa.
+Para remover: Configurações → Aplicativos → Locke → Desinstalar. Não funciona durante uma sessão ativa.
+
+Sem o instalador, também dá para usar `scripts\instalar_servico.ps1` / `scripts\desinstalar_servico.ps1` (PowerShell como administrador, com os `.exe` na mesma pasta).
 
 O parâmetro `--teste` abre o app com a duração de 1 minuto, para validar.
 
@@ -57,7 +59,7 @@ Os testes usam arquivos e processos falsos; nenhum toca no seu `hosts`.
 .\scripts\build.ps1
 ```
 
-Gera `dist\Locke.exe` e `dist\LockeService.exe` com PyInstaller. Feche o Locke antes, e pare o serviço se for substituir o `LockeService.exe`.
+Gera `dist\Locke.exe` e `dist\LockeService.exe` com PyInstaller e o instalador `dist\LockeSetup.exe` com [Inno Setup](https://jrsoftware.org/isinfo.php) (`winget install JRSoftware.InnoSetup`). Feche o Locke antes, e pare o serviço se for substituir o `LockeService.exe`.
 
 ## Estrutura
 

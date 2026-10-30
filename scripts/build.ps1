@@ -1,5 +1,5 @@
-# Gera dist\Locke.exe (interface) e dist\LockeService.exe (serviço) + scripts de instalação.
-# Feche o Locke.exe antes: o Windows trava o arquivo enquanto ele está aberto.
+# Gera dist\Locke.exe, dist\LockeService.exe e o instalador dist\LockeSetup.exe.
+# Feche o Locke.exe e pare o serviço antes: o Windows trava os arquivos enquanto estão em uso.
 Set-Location (Join-Path $PSScriptRoot "..")
 
 python -m PyInstaller --noconfirm --onefile --noconsole --name Locke --icon icon.ico `
@@ -7,4 +7,7 @@ python -m PyInstaller --noconfirm --onefile --noconsole --name Locke --icon icon
 python -m PyInstaller --noconfirm --onefile --console --name LockeService --icon icon.ico `
     --hidden-import win32timezone locke_service.py
 
-Copy-Item scripts\instalar_servico.ps1, scripts\desinstalar_servico.ps1 dist\ -Force
+# Instalador (Inno Setup: winget install JRSoftware.InnoSetup)
+$iscc = @("$env:ProgramFiles\Inno Setup 6\ISCC.exe", "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
+          "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe") | Where-Object { Test-Path $_ } | Select-Object -First 1
+if ($iscc) { & $iscc installer\locke.iss } else { Write-Warning "Inno Setup não encontrado: instalador não gerado." }
